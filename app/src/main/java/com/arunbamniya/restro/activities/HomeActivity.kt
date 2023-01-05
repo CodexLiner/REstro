@@ -1,22 +1,26 @@
 package com.arunbamniya.restro.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.arunbamniya.restro.Fragments.HomeFragment
+import com.arunbamniya.restro.Fragments.WelcomeFragment
 import com.arunbamniya.restro.R
 import com.arunbamniya.restro.adapter.items_adapter
+import com.arunbamniya.restro.kiosk.KioskUtil
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class HomeActivity : AppCompatActivity() {
-    lateinit var items_recycler: RecyclerView
-    lateinit var items_adapter: items_adapter
+
     lateinit var date: TextView
     lateinit var time: TextView
 
@@ -24,17 +28,13 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        items_recycler = findViewById(R.id.items_recycler);
         time = findViewById(R.id.time);
         date = findViewById(R.id.date);
-
         setDateTime(date, time)
-
-
-        items_recycler.layoutManager = GridLayoutManager(applicationContext, 2)
-        items_adapter = items_adapter()
-        items_recycler.adapter = items_adapter
-
+        date.setOnClickListener {
+            KioskUtil.startKioskMode(this)
+        }
+        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, HomeFragment()).commit()
 
     }
 
@@ -59,7 +59,6 @@ class HomeActivity : AppCompatActivity() {
                 } catch (_: InterruptedException) { }
             }
         }
-
         thread.start()
     }
 }

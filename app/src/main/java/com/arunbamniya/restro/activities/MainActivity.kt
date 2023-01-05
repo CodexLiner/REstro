@@ -1,52 +1,75 @@
 package com.arunbamniya.restro.activities
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.arunbamniya.restro.Fragments.QRFragment
+import com.arunbamniya.restro.Fragments.WelcomeFragment
 import com.arunbamniya.restro.R
+import com.arunbamniya.restro.kiosk.KioskUtil
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var date: TextView
+    lateinit var time_out: TextView
+    lateinit var time: TextView
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_main)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        actionBar?.hide()
 
-        this.supportFragmentManager.beginTransaction().replace(R.id.fmm , QRFragment()).commit()
 
-//        val activity : Activity = this@MainActivity
-//        val manager = activity
-//            .getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//
-//        val localLayoutParams = WindowManager.LayoutParams()
-//        localLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST
-//        localLayoutParams.gravity = Gravity.TOP
-//        localLayoutParams.flags =
-//            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or  // this is to enable the notification to recieve touch events
-//                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or  // Draws over status bar
-//                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-//
-//        localLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
-//        localLayoutParams.height = (50 * resources
-//            .displayMetrics.scaledDensity).toInt()
-//        localLayoutParams.format = PixelFormat.TRANSPARENT
-//
-//        val view = customViewGroup(activity)
-//
-//        manager.addView(view, localLayoutParams)
-    }
-    class customViewGroup(context: Context?) : ViewGroup(context) {
-        override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {}
-        override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-            Log.d("customViewGroup", "**********Intercepted")
-            return true
+        time = findViewById(R.id.time);
+        date = findViewById(R.id.date);
+
+        date.setOnClickListener {
+            KioskUtil.startKioskMode(this)
         }
+
+        setDateTime(date, time)
+
+        this.supportFragmentManager.beginTransaction().replace(R.id.fmm, WelcomeFragment()).commit()
+
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setDateTime(date: TextView?, time: TextView?) {
+        val thread: Thread = object : Thread() {
+            override fun run() {
+                try {
+                    while (!this.isInterrupted) {
+                        sleep(1000)
+                        runOnUiThread {
+                            if (date != null) {
+                                date.text = LocalDateTime.now()
+                                    .format(DateTimeFormatter.ofPattern("EEEE d MMM"))
+                            }
+                            if (time != null) {
+                                time.text =
+                                    LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm a"))
+                            }
+                        }
+                    }
+                } catch (_: InterruptedException) {
+                }
+            }
+        }
+
+        thread.start()
+    }
+
+    override fun onBackPressed() {
+
+    }
+
+
 }
