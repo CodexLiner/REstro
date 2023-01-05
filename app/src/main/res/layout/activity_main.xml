@@ -8,10 +8,14 @@
     android:id="@+id/layout"
     android:background="@drawable/ic_hello"
     android:orientation="vertical">
-    <Button
-        android:padding="5dp"
-        android:layout_gravity="center"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:text="Start Something"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fmm"/>
+<!--    <Button-->
+<!--        android:padding="5dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:text="Start Something"/>-->
 </ScrollView>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import com.arunbamniya.restro.Fragments.QRFragment
 import com.arunbamniya.restro.R
 
 
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         actionBar?.hide()
+
+        this.supportFragmentManager.beginTransaction().replace(R.id.fmm , QRFragment()).commit()
 
 //        val activity : Activity = this@MainActivity
 //        val manager = activity

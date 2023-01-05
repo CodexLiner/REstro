@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners
+        android:bottomLeftRadius="@dimen/cart_rad"
+        android:bottomRightRadius="@dimen/cart_rad"
+        android:topLeftRadius="@dimen/cart_rad"
+        android:topRightRadius="@dimen/cart_rad" />
+    <solid android:color="#5E252525" />
+    <stroke
+        android:width="0.5dp"
+        android:color="@color/main" />
+</shape>
