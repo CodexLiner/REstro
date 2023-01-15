@@ -3,7 +3,7 @@
     <style name="Theme.RESTRO" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed">false</item>
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/button_food</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/main</item>
         <!-- Secondary brand color. -->
