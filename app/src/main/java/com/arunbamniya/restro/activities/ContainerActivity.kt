@@ -1,18 +1,9 @@
 package com.arunbamniya.restro.activities
 
-import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Base64
-import android.view.View
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.arunbamniya.restro.Fragments.QRFragment
 import com.arunbamniya.restro.R
@@ -32,7 +23,11 @@ class ContainerActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_container)
 
-        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, QRFragment())
+        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, QRFragment(
+            sum,
+            cart_adapter.list
+        )
+        )
             .commit()
 
         time = findViewById(R.id.time);

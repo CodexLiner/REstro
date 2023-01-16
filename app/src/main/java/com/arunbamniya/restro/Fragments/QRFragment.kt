@@ -7,32 +7,22 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.arunbamniya.restro.R
-import com.paytm.pg.merchant.PaytmChecksum
+import com.arunbamniya.restro.network.ItemResponse
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
-import java.net.HttpURLConnection
 import java.net.URL
 
 
@@ -41,12 +31,7 @@ import java.net.URL
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [QRFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class QRFragment : Fragment() {
+class QRFragment(val sum: Int, val list: MutableList<ItemResponse>?) : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -95,13 +80,14 @@ class QRFragment : Fragment() {
             }
 
             override fun onFinish() {
-                activity?.finish()
+                activity?.supportFragmentManager?.popBackStack()
             }
         }
         timer.start()
 
         view.findViewById<TextView>(R.id.cancel_button).setOnClickListener {
-            activity?.finish()
+            activity?.supportFragmentManager?.popBackStack()
+
         }
 
 
@@ -132,7 +118,7 @@ class QRFragment : Fragment() {
                 val jsonObject: JSONObject? = response.body?.string()?.let { JSONObject(it) }
                 if (jsonObject != null) {
                     val bodyObject: JSONObject = JSONObject(jsonObject.getString("body"))
-                    if (bodyObject.getString("image")!=null){
+                    if (bodyObject.getString("image") != null) {
                         setBitmapImage(bodyObject.getString("image"))
                     }
                 }
@@ -150,14 +136,14 @@ class QRFragment : Fragment() {
 
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) = QRFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
-                putString(ARG_PARAM2, param2)
-            }
-        }
-    }
+//    companion object {
+//
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) = QRFragment(sum, cart_adapter.list).apply {
+//            arguments = Bundle().apply {
+//                putString(ARG_PARAM1, param1)
+//                putString(ARG_PARAM2, param2)
+//            }
+//        }
+//    }
 }

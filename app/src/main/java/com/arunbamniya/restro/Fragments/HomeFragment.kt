@@ -59,6 +59,7 @@ class HomeFragment : Fragment(), AdapterClicker {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -75,8 +76,7 @@ class HomeFragment : Fragment(), AdapterClicker {
 
 
         pay_button.setOnClickListener {
-//            activity?.supportFragmentManager?.beginTransaction()
-//                ?.replace(R.id.main_frame, QRFragment())?.addToBackStack("home")?.commit()
+
 
             val displayMetrics = DisplayMetrics()
             activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
@@ -88,11 +88,22 @@ class HomeFragment : Fragment(), AdapterClicker {
 
             dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog?.setCancelable(false)
-            dialog?.window?.setLayout((width/2)+100, height - 150)
+            dialog?.window?.setLayout((width / 2) + 100, height - 150)
 
             val confirm_recycler = dialog?.findViewById<RecyclerView>(R.id.confirm_recycler)
-            confirm_recycler?.layoutManager = LinearLayoutManager(dialog?.context , LinearLayoutManager.VERTICAL, false )
-            confirm_recycler?.adapter = OrderConfirmAdapter()
+            val confirm = dialog?.findViewById<Button>(R.id.confirm_button)
+            val cancel = dialog?.findViewById<Button>(R.id.cancel_button)
+            confirm_recycler?.layoutManager =
+                LinearLayoutManager(dialog?.context, LinearLayoutManager.VERTICAL, false)
+            confirm_recycler?.adapter = OrderConfirmAdapter(cart_adapter.list)
+            val sum = sumOfvalues(cart_adapter.list, 0)
+            confirm?.text = "Pay ₹ $sum"
+            cancel?.setOnClickListener { dialog.dismiss() }
+
+            confirm?.setOnClickListener {
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.main_frame, QRFragment(sum , cart_adapter.list))?.addToBackStack("home")?.commit()
+            }
 
             dialog?.show()
 
@@ -198,6 +209,14 @@ class HomeFragment : Fragment(), AdapterClicker {
             mSum += list[i].price.toInt() * list[i].itemCount.toInt()
         }
         return StringBuilder("Cart $mSum")
+    }
+
+    private fun sumOfvalues(list: MutableList<ItemResponse>?, int: Int): Int {
+        var mSum = 0;
+        for (i in list?.indices!!) {
+            mSum += list[i].price.toInt() * list[i].itemCount.toInt()
+        }
+        return mSum
     }
 
     override fun onCategoryChanged(category: String?, position: Int) {
