@@ -36,7 +36,7 @@ class items_adapter(val list: MutableList<ItemResponse>?, val listner: AdapterCl
         Glide.with(holder.item_image.context).load(list?.get(position)?.photo)
             .placeholder(R.drawable.food_place).into(holder.item_image)
         holder.item_name.text = list?.get(position)?.name
-        holder.item_price.text = "Rs. ${list?.get(position)?.price}"
+        holder.item_price.text = "₹ ${list?.get(position)?.price}"
         holder.item_button.isEnabled = list?.get(position)?.isAdded != true
 
         holder.item_button.setOnClickListener {

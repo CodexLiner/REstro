@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.arunbamniya.restro.R
 import com.arunbamniya.restro.interfaces.AdapterClicker
 import com.arunbamniya.restro.network.ItemResponse
 
-class my_cart(var list: MutableList<ItemResponse>?, val listner: AdapterClicker) :
+class my_cart(var list: MutableList<ItemResponse>?, val listener: AdapterClicker) :
     RecyclerView.Adapter<my_cart.holder>() {
 
     class holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +28,7 @@ class my_cart(var list: MutableList<ItemResponse>?, val listner: AdapterClicker)
     }
 
     override fun onBindViewHolder(holder: holder, position: Int) {
+        listener.upDateCartValue()
         holder.item_name.text = list?.get(position)?.name
         holder.item_price.text = list?.get(position)?.price
         holder.item_name.text = list?.get(position)?.name
@@ -40,10 +40,8 @@ class my_cart(var list: MutableList<ItemResponse>?, val listner: AdapterClicker)
                 if (list?.get(position)?.itemCount == 1) {
 
                     list?.get(position)?.isAdded = false
-                    listner.onCartChanged(list?.get(position), position)
+                    listener.onCartChanged(list?.get(position), position)
 
-//                 this.list!!.removeAt(position)
-//                 this.notifyItemRemoved(position)
 
                 } else {
                     list?.get(position)?.itemCount = list?.get(position)?.itemCount?.minus(1)!!
@@ -58,6 +56,7 @@ class my_cart(var list: MutableList<ItemResponse>?, val listner: AdapterClicker)
         }
 
     }
+
 
     override fun getItemCount(): Int {
         return list?.size ?: 0

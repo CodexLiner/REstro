@@ -1,18 +1,24 @@
 package com.arunbamniya.restro.Fragments
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arunbamniya.restro.R
-import com.arunbamniya.restro.adapter.category_adapter
+import com.arunbamniya.restro.adapter.CategoryAdapter
+import com.arunbamniya.restro.adapter.OrderConfirmAdapter
 import com.arunbamniya.restro.adapter.items_adapter
 import com.arunbamniya.restro.adapter.my_cart
 import com.arunbamniya.restro.interfaces.AdapterClicker
@@ -36,10 +42,14 @@ class HomeFragment : Fragment(), AdapterClicker {
     lateinit var items_adapter: items_adapter
 
     lateinit var category_recycler: RecyclerView
-    lateinit var categories_adapter: category_adapter
+    lateinit var categories_adapter: CategoryAdapter
 
     lateinit var cart_recycler: RecyclerView
     lateinit var cart_adapter: my_cart
+
+    lateinit var cart_value: AppCompatTextView
+
+    lateinit var pay_button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,15 +66,37 @@ class HomeFragment : Fragment(), AdapterClicker {
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
         items_recycler = view.findViewById(R.id.items_recycler);
 
+        cart_value = view.findViewById(R.id.cart_value);
+        pay_button = view.findViewById<Button>(R.id.pay_button)
         category_recycler = view.findViewById(R.id.category_recycler);
 
         cart_recycler = view.findViewById(R.id.cart_recycler);
         cart_adapter = my_cart(null, this@HomeFragment)
 
 
-        view.findViewById<Button>(R.id.pay_button).setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.main_frame, QRFragment())?.addToBackStack("home")?.commit()
+        pay_button.setOnClickListener {
+//            activity?.supportFragmentManager?.beginTransaction()
+//                ?.replace(R.id.main_frame, QRFragment())?.addToBackStack("home")?.commit()
+
+            val displayMetrics = DisplayMetrics()
+            activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+            val height = displayMetrics.heightPixels
+            val width = displayMetrics.widthPixels
+
+            val dialog = context?.let { it1 -> Dialog(it1) }
+            dialog?.setContentView(R.layout.custom_cart_dialog)
+
+            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog?.setCancelable(false)
+            dialog?.window?.setLayout((width/2)+100, height - 150)
+
+            val confirm_recycler = dialog?.findViewById<RecyclerView>(R.id.confirm_recycler)
+            confirm_recycler?.layoutManager = LinearLayoutManager(dialog?.context , LinearLayoutManager.VERTICAL, false )
+            confirm_recycler?.adapter = OrderConfirmAdapter()
+
+            dialog?.show()
+
+
         }
         getCategories()
         getItems("63c2b895c6f1a0528151050f")
@@ -107,7 +139,8 @@ class HomeFragment : Fragment(), AdapterClicker {
             override fun onResponse(
                 call: Call<List<CategoryResponse>?>, response: Response<List<CategoryResponse>?>
             ) {
-                categories_adapter = category_adapter(response.body(), this@HomeFragment)
+                response.body()?.get(0)?.isSelected = true
+                categories_adapter = CategoryAdapter(response.body(), this@HomeFragment)
                 category_recycler.adapter = categories_adapter
             }
 
@@ -154,11 +187,39 @@ class HomeFragment : Fragment(), AdapterClicker {
         cart_adapter.list?.removeAt(position)
         cart_adapter.list?.let { cart_adapter.notifyItemRangeChanged(position, it.size) }
         cart_adapter.notifyDataSetChanged()
+
+        pay_button.isEnabled = cart_adapter.list?.size!! > 0
+
     }
 
-    override fun onCategoryChanged(category: String?) {
+    private fun sumOfvalues(list: MutableList<ItemResponse>?): StringBuilder {
+        var mSum = 0;
+        for (i in list?.indices!!) {
+            mSum += list[i].price.toInt() * list[i].itemCount.toInt()
+        }
+        return StringBuilder("Cart $mSum")
+    }
+
+    override fun onCategoryChanged(category: String?, position: Int) {
         if (category != null) {
             getItems(category)
+            setNotSelected(0, null)
+            categories_adapter.list?.get(position)?.isSelected = true
+            categories_adapter = CategoryAdapter(categories_adapter.list, this@HomeFragment)
+            category_recycler.adapter = categories_adapter
+        }
+    }
+
+    override fun upDateCartValue() {
+
+        pay_button.isEnabled = cart_adapter.list?.size!! > 0
+        val value = sumOfvalues(cart_adapter.list).toString()
+        cart_value.text = value.toString()
+    }
+
+    private fun setNotSelected(position: Int, list: List<CategoryResponse>?) {
+        for (i in categories_adapter.list?.indices!!) {
+            categories_adapter.list?.get(i)?.isSelected = false
         }
     }
 }

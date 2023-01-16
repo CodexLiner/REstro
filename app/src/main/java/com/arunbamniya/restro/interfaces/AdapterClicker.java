@@ -9,7 +9,10 @@ public interface AdapterClicker {
 
     void onCartChanged(ItemResponse item, int position);
 
-    void onCategoryChanged(String category);
+    void onCategoryChanged(String category , int position);
+
+    void upDateCartValue();
+
 
 
 }

@@ -115,12 +115,13 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cart_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:gravity="center"
-                    android:text="Cart Value  Rs. 100000"
+                    android:gravity="center|start"
+                    android:text="Cart ₹ 0"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
@@ -129,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:itemCount="5"
-                    tools:listitem="@layout/categories_layout" />
+                    tools:listitem="@layout/cart_item_design" />
 
 
                 <LinearLayout
@@ -138,11 +139,11 @@
                     android:layout_weight="1">
 
                     <Button
+                        android:enabled="false"
                         android:id="@+id/pay_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:backgroundTint="@color/button_food"
                         android:text="Pay &amp; get"
                         android:textColor="@color/white" />
                 </LinearLayout>

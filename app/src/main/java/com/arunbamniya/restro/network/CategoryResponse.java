@@ -2,6 +2,7 @@ package com.arunbamniya.restro.network;
 
 public class CategoryResponse {
     String name, description, id, icon;
+    boolean selected = false;
 
     public String getName() {
         return name;
@@ -25,6 +26,14 @@ public class CategoryResponse {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     @Override

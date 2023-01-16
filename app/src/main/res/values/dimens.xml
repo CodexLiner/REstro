@@ -3,4 +3,5 @@
     <dimen name="cat_rad">10dp</dimen>
     <dimen name="cart_rad">5dp</dimen>
     <dimen name="button_radius">10dp</dimen>
+    <dimen name="ocm">4dp</dimen>
 </resources>
