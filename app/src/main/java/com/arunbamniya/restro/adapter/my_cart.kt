@@ -28,7 +28,7 @@ class my_cart(var list: MutableList<ItemResponse>?, val listener: AdapterClicker
     }
 
     override fun onBindViewHolder(holder: holder, position: Int) {
-        listener.upDateCartValue()
+        listener.upDateCartValue(true)
         holder.item_name.text = list?.get(position)?.name
         holder.item_price.text = list?.get(position)?.price
         holder.item_name.text = list?.get(position)?.name
@@ -36,13 +36,14 @@ class my_cart(var list: MutableList<ItemResponse>?, val listener: AdapterClicker
 
         holder.minus_button.setOnClickListener {
             try {
-
+                if (list?.size == 1) {
+                    listener.upDateCartValue(false)
+                } else {
+                    listener.upDateCartValue(true)
+                }
                 if (list?.get(position)?.itemCount == 1) {
-
                     list?.get(position)?.isAdded = false
                     listener.onCartChanged(list?.get(position), position)
-
-
                 } else {
                     list?.get(position)?.itemCount = list?.get(position)?.itemCount?.minus(1)!!
                     this.notifyItemChanged(position)
@@ -51,6 +52,7 @@ class my_cart(var list: MutableList<ItemResponse>?, val listener: AdapterClicker
             }
         }
         holder.plus_button.setOnClickListener {
+            listener.upDateCartValue(true)
             list?.get(position)?.itemCount = list?.get(position)?.itemCount?.plus(1)!!
             this.notifyItemChanged(position)
         }

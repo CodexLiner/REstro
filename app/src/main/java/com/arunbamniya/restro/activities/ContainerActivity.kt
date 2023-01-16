@@ -23,12 +23,7 @@ class ContainerActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_container)
 
-        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, QRFragment(
-            sum,
-            cart_adapter.list
-        )
-        )
-            .commit()
+//        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, QRFragment(sum,cart_adapter.list )).commit()
 
         time = findViewById(R.id.time);
         date = findViewById(R.id.date);

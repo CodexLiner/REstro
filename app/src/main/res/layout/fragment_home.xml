@@ -48,11 +48,6 @@
                     tools:itemCount="5"
                     tools:listitem="@layout/categories_layout" />
 
-                <ListView
-                    android:id="@+id/ListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:listitem="@layout/categories_layout" />
 
             </LinearLayout>
 
@@ -115,15 +110,29 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/cart_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center|start"
-                    android:text="Cart ₹ 0"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
+              <LinearLayout
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="50dp">
+                  <androidx.appcompat.widget.AppCompatTextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/poppins_medium"
+                      android:gravity="center|start"
+                      android:text="@string/cart_value"
+                      android:textColor="@color/white"
+                      android:textSize="20sp" />
+                  <androidx.appcompat.widget.AppCompatTextView
+                      android:id="@+id/cart_value"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/poppins_medium"
+                      android:gravity="center|start"
+                      android:layout_gravity="start"
+                      android:text="0"
+                      android:textColor="@color/white"
+                      android:textSize="20sp" />
+              </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/cart_recycler"

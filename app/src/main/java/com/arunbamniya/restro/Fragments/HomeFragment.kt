@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
@@ -93,21 +94,22 @@ class HomeFragment : Fragment(), AdapterClicker {
             val confirm_recycler = dialog?.findViewById<RecyclerView>(R.id.confirm_recycler)
             val confirm = dialog?.findViewById<Button>(R.id.confirm_button)
             val cancel = dialog?.findViewById<Button>(R.id.cancel_button)
+            val cart_total = dialog?.findViewById<TextView>(R.id.cart_total)
             confirm_recycler?.layoutManager =
                 LinearLayoutManager(dialog?.context, LinearLayoutManager.VERTICAL, false)
             confirm_recycler?.adapter = OrderConfirmAdapter(cart_adapter.list)
             val sum = sumOfvalues(cart_adapter.list, 0)
             confirm?.text = "Pay ₹ $sum"
+            cart_total?.text = sum.toString()
             cancel?.setOnClickListener { dialog.dismiss() }
 
             confirm?.setOnClickListener {
+                dialog.dismiss()
                 activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.main_frame, QRFragment(sum , cart_adapter.list))?.addToBackStack("home")?.commit()
+                    ?.replace(R.id.main_frame, QRFragment(sum, cart_adapter.list))
+                    ?.addToBackStack("home")?.commit()
             }
-
             dialog?.show()
-
-
         }
         getCategories()
         getItems("63c2b895c6f1a0528151050f")
@@ -203,12 +205,17 @@ class HomeFragment : Fragment(), AdapterClicker {
 
     }
 
-    private fun sumOfvalues(list: MutableList<ItemResponse>?): StringBuilder {
+    private fun sumOfvalues(list: MutableList<ItemResponse>?): String {
         var mSum = 0;
+
+        if (list?.isEmpty() == true) {
+
+            cart_value.text = " 0"
+        }
         for (i in list?.indices!!) {
             mSum += list[i].price.toInt() * list[i].itemCount.toInt()
         }
-        return StringBuilder("Cart $mSum")
+        return mSum.toString()
     }
 
     private fun sumOfvalues(list: MutableList<ItemResponse>?, int: Int): Int {
@@ -229,11 +236,14 @@ class HomeFragment : Fragment(), AdapterClicker {
         }
     }
 
-    override fun upDateCartValue() {
-
-        pay_button.isEnabled = cart_adapter.list?.size!! > 0
-        val value = sumOfvalues(cart_adapter.list).toString()
-        cart_value.text = value.toString()
+    override fun upDateCartValue(b: Boolean) {
+        if (!b) {
+            cart_value.text = "0"
+        }else{
+            pay_button.isEnabled = cart_adapter.list?.size!! > 0
+            val value = sumOfvalues(cart_adapter.list)
+            cart_value.text = value.toString()
+        }
     }
 
     private fun setNotSelected(position: Int, list: List<CategoryResponse>?) {

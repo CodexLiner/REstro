@@ -2,8 +2,6 @@ package com.arunbamniya.restro.interfaces;
 
 import com.arunbamniya.restro.network.ItemResponse;
 
-import java.util.List;
-
 public interface AdapterClicker {
     void onItemClicked(ItemResponse item, int position);
 
@@ -11,7 +9,7 @@ public interface AdapterClicker {
 
     void onCategoryChanged(String category , int position);
 
-    void upDateCartValue();
+    void upDateCartValue(boolean b);
 
 
 

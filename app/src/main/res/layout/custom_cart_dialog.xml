@@ -24,6 +24,16 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center|start"
+            android:text="Order Summary"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/confirm_recycler"
             android:layout_width="match_parent"
@@ -57,6 +67,7 @@
                     android:layout_margin="20dp"/>
 
                 <TextView
+                    android:id="@+id/cart_total"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_weight="1"
                     android:layout_gravity="end|bottom"

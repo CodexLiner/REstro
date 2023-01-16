@@ -72,32 +72,18 @@ class QRFragment(val sum: Int, val list: MutableList<ItemResponse>?) : Fragment(
 
         qr_code = view.findViewById<ImageView>(R.id.qr_code)
 
-//        Timer To auto cancel order
-        val timer = object : CountDownTimer(120000, 1000) {
-            @SuppressLint("SetTextI18n")
-            override fun onTick(millisUntilFinished: Long) {
-                time_out.text = "Code Expires In ${millisUntilFinished / 1000} Seconds"
-            }
 
-            override fun onFinish() {
-                activity?.supportFragmentManager?.popBackStack()
-            }
-        }
-        timer.start()
 
         view.findViewById<TextView>(R.id.cancel_button).setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
-
         }
-
-
         return view
     }
 
     private fun sendcall() {
 
         val paytmParams = JSONObject()
-        paytmParams.put("amount", 100)
+        paytmParams.put("amount", sum)
         val post_data = paytmParams.toString()
 
 
@@ -120,10 +106,28 @@ class QRFragment(val sum: Int, val list: MutableList<ItemResponse>?) : Fragment(
                     val bodyObject: JSONObject = JSONObject(jsonObject.getString("body"))
                     if (bodyObject.getString("image") != null) {
                         setBitmapImage(bodyObject.getString("image"))
+                        startTimer()
                     }
                 }
             }
         })
+    }
+
+    private fun startTimer() {
+        activity?.runOnUiThread {
+            //        Timer To auto cancel order
+            val timer = object : CountDownTimer(120000, 1000) {
+                @SuppressLint("SetTextI18n")
+                override fun onTick(millisUntilFinished: Long) {
+                    time_out.text = "Code Expires In ${millisUntilFinished / 1000} Seconds"
+                }
+
+                override fun onFinish() {
+                    activity?.supportFragmentManager?.popBackStack()
+                }
+            }
+            timer.start()
+        }
     }
 
     private fun setBitmapImage(s: String) {

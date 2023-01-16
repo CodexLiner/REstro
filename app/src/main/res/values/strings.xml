@@ -5,4 +5,5 @@
     <string name="scan_below_code_to_pay">SCAN BELOW CODE TO PAY</string>
     <string name="categories">Categories</string>
     <string name="total">CART TOTAL</string>
+    <string name="cart_value">Cart Value ₹ </string>
 </resources>
