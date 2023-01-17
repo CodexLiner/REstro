@@ -9,6 +9,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +27,7 @@ import com.arunbamniya.restro.interfaces.AdapterClicker
 import com.arunbamniya.restro.network.CategoryResponse
 import com.arunbamniya.restro.network.ItemResponse
 import com.arunbamniya.restro.network.RetrofitClient
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,6 +53,7 @@ class HomeFragment : Fragment(), AdapterClicker {
     lateinit var cart_value: AppCompatTextView
 
     lateinit var pay_button: Button
+    lateinit var shimmer : ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,13 +71,14 @@ class HomeFragment : Fragment(), AdapterClicker {
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
         items_recycler = view.findViewById(R.id.items_recycler);
 
+        shimmer = view.findViewById(R.id.shimmer)
+
         cart_value = view.findViewById(R.id.cart_value);
         pay_button = view.findViewById<Button>(R.id.pay_button)
         category_recycler = view.findViewById(R.id.category_recycler);
 
         cart_recycler = view.findViewById(R.id.cart_recycler);
         cart_adapter = my_cart(null, this@HomeFragment)
-
 
         pay_button.setOnClickListener {
 
@@ -127,8 +131,8 @@ class HomeFragment : Fragment(), AdapterClicker {
     }
 
     private fun getItems(category: String) {
+        shimmer.visibility = View.VISIBLE
         val apiInterface = RetrofitClient.getInstance().api
-
         val responseCall = apiInterface.getItems(category)
         responseCall?.enqueue(object : Callback<MutableList<ItemResponse>?> {
             override fun onResponse(
@@ -137,15 +141,18 @@ class HomeFragment : Fragment(), AdapterClicker {
             ) {
                 items_adapter = items_adapter(response.body(), this@HomeFragment)
                 items_recycler.adapter = items_adapter
+                shimmer.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<MutableList<ItemResponse>?>, t: Throwable) {
                 Toast.makeText(context, "Failed To Load Items", Toast.LENGTH_SHORT).show()
+
             }
         })
     }
 
     private fun getCategories() {
+
         val apiInterface = RetrofitClient.getInstance().api
         val responseCall = apiInterface.listCategory()
         responseCall?.enqueue(object : Callback<List<CategoryResponse>?> {
@@ -155,10 +162,12 @@ class HomeFragment : Fragment(), AdapterClicker {
                 response.body()?.get(0)?.isSelected = true
                 categories_adapter = CategoryAdapter(response.body(), this@HomeFragment)
                 category_recycler.adapter = categories_adapter
+
             }
 
             override fun onFailure(call: Call<List<CategoryResponse>?>, t: Throwable) {
                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
+
             }
         })
 

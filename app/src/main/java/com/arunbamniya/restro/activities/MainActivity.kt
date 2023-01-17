@@ -1,6 +1,9 @@
 package com.arunbamniya.restro.activities
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         time = findViewById(R.id.time);
         date = findViewById(R.id.date);
@@ -70,6 +72,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
 
     }
+
 
 
 }
