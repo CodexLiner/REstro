@@ -53,7 +53,7 @@ class HomeFragment : Fragment(), AdapterClicker {
     lateinit var cart_value: AppCompatTextView
 
     lateinit var pay_button: Button
-    lateinit var shimmer : ShimmerFrameLayout
+    lateinit var shimmer: ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +104,7 @@ class HomeFragment : Fragment(), AdapterClicker {
             confirm_recycler?.adapter = OrderConfirmAdapter(cart_adapter.list)
             val sum = sumOfvalues(cart_adapter.list, 0)
             confirm?.text = "Pay ₹ $sum"
-            cart_total?.text = sum.toString()
+            cart_total?.text = "₹ $sum"
             cancel?.setOnClickListener { dialog.dismiss() }
 
             confirm?.setOnClickListener {
@@ -248,7 +248,7 @@ class HomeFragment : Fragment(), AdapterClicker {
     override fun upDateCartValue(b: Boolean) {
         if (!b) {
             cart_value.text = "0"
-        }else{
+        } else {
             pay_button.isEnabled = cart_adapter.list?.size!! > 0
             val value = sumOfvalues(cart_adapter.list)
             cart_value.text = value.toString()

@@ -30,7 +30,8 @@ class my_cart(var list: MutableList<ItemResponse>?, val listener: AdapterClicker
     override fun onBindViewHolder(holder: holder, position: Int) {
         listener.upDateCartValue(true)
         holder.item_name.text = list?.get(position)?.name
-        holder.item_price.text = list?.get(position)?.price
+        val price = "₹ "+list?.get(position)?.price
+        holder.item_price.text = price
         holder.item_name.text = list?.get(position)?.name
         holder.item_count.text = list?.get(position)?.itemCount.toString()
 

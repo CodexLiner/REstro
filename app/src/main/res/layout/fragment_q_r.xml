@@ -37,6 +37,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/head_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -78,6 +79,7 @@
                     android:textColor="@color/white" />
 
                 <Button
+                    android:id="@+id/cancel_button"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
@@ -85,11 +87,11 @@
                     android:layout_marginEnd="20dp"
                     android:backgroundTint="@color/button_food"
                     android:padding="10dp"
-                    android:text="Edit Order"
+                    android:text="Cancel Order"
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/cancel_button"
+                    android:visibility="invisible"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

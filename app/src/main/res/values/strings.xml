@@ -6,4 +6,5 @@
     <string name="categories">Categories</string>
     <string name="total">CART TOTAL</string>
     <string name="cart_value">Cart Value ₹ </string>
+    <string name="rupee_sign">₹</string>
 </resources>

@@ -34,7 +34,12 @@ class HomeActivity : AppCompatActivity() {
         date.setOnClickListener {
             KioskUtil.startKioskMode(this)
         }
-        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, HomeFragment()).commit()
+        this.supportFragmentManager.beginTransaction().replace(R.id.main_frame, HomeFragment())
+            .commit()
+
+    }
+
+    override fun onBackPressed() {
 
     }
 
@@ -56,7 +61,8 @@ class HomeActivity : AppCompatActivity() {
                             }
                         }
                     }
-                } catch (_: InterruptedException) { }
+                } catch (_: InterruptedException) {
+                }
             }
         }
         thread.start()
