@@ -161,7 +161,7 @@ class QRFragment(private val sum: Int, val list: MutableList<ItemResponse>?) : F
                             call: Call<ItemResponse>,
                             response: Response<ItemResponse>
                         ) {
-                            Log.d("TAG", "onResponse: ${response.body()?.order_status.toString()}")
+                            Log.d("TAG", "onResponse = id = ${id}: ${response.body()?.order_status.toString()}")
                             if (response.body()?.order_status == Constants.PAYMENT_STATUS_SUCCESS) {
                                 orderStatus = true
                                 orderSuccess(id)
